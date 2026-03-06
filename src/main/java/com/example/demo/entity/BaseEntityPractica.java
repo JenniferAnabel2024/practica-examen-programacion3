@@ -6,15 +6,15 @@ import jakarta.persistence.Id;
 
 
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntityPractica {
 	@Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private Long id;
 	
-	public BaseEntity () {
+	public BaseEntityPractica () {
 		
 	}
-	public BaseEntity (Long id) {
+	public BaseEntityPractica (Long id) {
 		this.id = id;
 	}
 		public Long getId() {

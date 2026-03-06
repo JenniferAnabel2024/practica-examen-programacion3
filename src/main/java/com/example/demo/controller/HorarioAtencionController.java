@@ -1,5 +1,6 @@
 package com.example.demo.controller;
-
+//HABLA CON EL SERVICE
+//CRITERIOS DE ACEPTACION VAN AQUI 
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,43 +16,44 @@ import com.example.demo.mapper.HorarioAtencionMapper;
 import com.example.demo.service.HorarioAtencionService;
 
 import jakarta.validation.Valid;
-
+// avisa a Spring que esta clase es un Controlador
 @RestController
+//Spring ya sabe que todo lo que esté adentro de ese archivo empieza con /horarioAtencion
 @RequestMapping("/horarioAtencion")
 public class HorarioAtencionController {
 
+	//Autowired es lla Inyección de Dependencias.(necesito usar las funciones de HorarioAtencionService.Inyectamelas, para que pueda usarla)
     @Autowired
-    private HorarioAtencionService horarioService; // Tu interfaz
+    private HorarioAtencionService horarioService; // Tu interfaz, VARIABLE DEL SERVICE.
 
     @Autowired
     private HorarioAtencionMapper mapper;
 
+    //Se usa para operaciones de lectura que no modifican la base de datos".
     // 1. Obtener todos
     @GetMapping
     public ResponseEntity<List<HorarioAtencionResponseDto>> listarTodos() {
-        List<HorarioAtencion> lista = horarioService.buscarTodos();
-        List<HorarioAtencionResponseDto> dtos = lista.stream()
-                .map(mapper::toResponseDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
+    	return ResponseEntity.ok(horarioService.buscarTodos());
+    	
     }
 
     // 2. Obtener por ID
     @GetMapping("/{id}")
     public ResponseEntity<HorarioAtencionResponseDto> obtenerPorId(@PathVariable Long id) {
-        HorarioAtencion horario = horarioService.buscarPorId(id);
-        if (horario == null) {
+        HorarioAtencionResponseDto dto  = horarioService.buscarPorId(id);
+        if (dto == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mapper.toResponseDto(horario));
+        return ResponseEntity.ok(dto);
     }
-
+     
+    //Es cuando el usuario viene con un formulario nuevo para dar de alta algo
     // 3. Crear (POST)
     @PostMapping
     public ResponseEntity<HorarioAtencionResponseDto> guardar(@Valid @RequestBody HorarioAtencionRequestDto dto) throws Exception {
         HorarioAtencion entity = mapper.fromDto(dto);
-        HorarioAtencion nuevo = horarioService.guardar(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDto(nuevo));
+        HorarioAtencionResponseDto nuevo = horarioService.guardar(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
     // 4. Eliminar
@@ -64,4 +66,60 @@ public class HorarioAtencionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el ID");
         }
     }
+    @GetMapping("/prioridad/{prioridad}")
+    public ResponseEntity<List<HorarioAtencionResponseDto>> buscarPorPrioridad(@PathVariable int prioridad) {
+        List<HorarioAtencionResponseDto> lista = horarioService.buscarPorPrioridad(prioridad);
+        
+        return ResponseEntity.ok(lista);
+    }
+ // 6. Obtener registros de Alta Prioridad (>= 4)
+    @GetMapping("/alta-prioridad")
+    public ResponseEntity<List<HorarioAtencionResponseDto>> listarAltaPrioridad() {
+        // Llamamos al service que ya sabe que "Alta" es >= 4
+        List<HorarioAtencionResponseDto> lista = horarioService.buscarAltaPrioridad();
+        return ResponseEntity.ok(lista);
+    }
+
+    // 7. Obtener registros de Baja Prioridad (<= 2)
+    @GetMapping("/baja-prioridad")
+    public ResponseEntity<List<HorarioAtencionResponseDto>> listarBajaPrioridad() {
+        // Llamamos al service que ya sabe que "Baja" es <= 2
+        List<HorarioAtencionResponseDto> lista = horarioService.buscarBajaPrioridad();
+        return ResponseEntity.ok(lista);
+    }
+    //@PutMapping (Editar): (Que también existe) Sería como borrar una palabra y escribir otra. También modifica.
+    
+    @GetMapping("/buscar-alias")
+    public ResponseEntity<?>buscarporalias (@RequestParam(required = false)String texto) {
+       if (texto==null || texto.trim().isEmpty()){
+    	   return ResponseEntity.status(400)
+    			   .body("{\"errors\": [\"texto de busqueda obligatorio\"]}");
+       }
+       List<HorarioAtencionResponseDto> resultados = horarioService.buscaralias(texto);
+       
+       return ResponseEntity.ok(resultados);
 }
+    
+    //IGUAL QUE EL SERVICE.IMPL
+    //400 ERROR + LISTA VACIA
+    @GetMapping("/buscar-especial")
+
+    public ResponseEntity<?>buscarporespecial (@RequestParam(required = false)String texto) {
+        if (texto==null || texto.trim().isEmpty()){
+     	   return ResponseEntity.status(400)
+     			   .body("{\"errors\": [\"texto de busqueda obligatorio\"]}");
+        }
+        List<HorarioAtencionResponseDto> resultados = horarioService.buscarporespecial(texto);
+        
+        return ResponseEntity.ok(resultados);
+ }
+
+
+
+}
+
+
+
+//POSTMAN get string 
+//http://localhost:8080/horarioAtencion/buscar-especial?texto=
+//http://localhost:8080/horarioAtencion/buscar-especial?texto=Pediatria

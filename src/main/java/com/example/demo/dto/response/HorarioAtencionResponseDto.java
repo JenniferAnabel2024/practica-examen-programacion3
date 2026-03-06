@@ -7,9 +7,20 @@ public class HorarioAtencionResponseDto {
     private String diaSemana;
     private String horaInicio;
     private String horaFin;
-    private Integer version; // Lo agregamos por si el profe lo pide como en el original
+    private Integer version;
+    private Integer prioridad;// Lo agregamos por si el profe lo pide como en el original
+    private String alias;
+    private String especial;
+    
+    public String getEspecial() {
+		return especial;
+	}
 
-    // Constructor vacío
+	public void setEspecial(String especial) {
+		this.especial = especial;
+	}
+
+	// Constructor vacío
     public HorarioAtencionResponseDto() {}
 
     // Getters y Setters
@@ -30,4 +41,17 @@ public class HorarioAtencionResponseDto {
 
     public Integer getVersion() { return version; }
     public void setVersion(Integer version) { this.version = version; }
-}
+    
+ // El GET (La salida)
+    public Integer getPrioridad() { 
+        return prioridad; 
+    }
+
+    // El SET (La entrada)
+    public void setPrioridad(Integer prioridad) { 
+        this.prioridad = prioridad; 
+    }
+    
+    public String getAlias() {return alias;}
+    public void setAlias (String alias) {this.alias = alias;}
+    }

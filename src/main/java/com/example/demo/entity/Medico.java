@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table (name ="medicos")
-public class Medico extends BaseEntity {
+public class Medico extends BaseEntityPractica {
 	
     private String nombre;
     private String apellido;
