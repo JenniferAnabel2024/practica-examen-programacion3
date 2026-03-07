@@ -31,6 +31,8 @@ public class HorarioAtencionRequestDto {
     @Pattern(regexp = "^([01]\\d|2[0-3]):([0-5]\\d)$", message = "Formato de hora inválido (HH:mm)")
     private String horaInicio;
 
+    
+    //NOT BLANK SOLO PARA TEXTO
     @NotBlank(message = "La hora de fin es obligatoria")
     @Pattern(regexp = "^([01]\\d|2[0-3]):([0-5]\\d)$", message = "Formato de hora inválido (HH:mm)")
     private String horaFin;
@@ -40,11 +42,19 @@ public class HorarioAtencionRequestDto {
     //NO OLVIDAR ESCRIBIR AQUIIII LA VARIABLEEE!!
     private String especial;
     
+    @NotNull (message = "El campo no debe quedar libre ")
+    private boolean libre;
+    
+    
     
     // Constructores
     public HorarioAtencionRequestDto() {}
 
     
+
+	
+
+
 
 	// Getters y Setters
     public Long getMedicoId() { return medicoId; }
@@ -67,5 +77,12 @@ public class HorarioAtencionRequestDto {
 
 	public void setEspecial(String especial) {
 		this.especial = especial;
+	}
+	public boolean isLibre() {
+		return libre;
+	}
+
+	public void setLibre(boolean libre) {
+		this.libre = libre;
 	}
     }

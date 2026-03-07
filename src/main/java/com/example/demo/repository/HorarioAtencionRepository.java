@@ -25,8 +25,10 @@ public interface HorarioAtencionRepository extends JpaRepository<HorarioAtencion
     // No imporatn las mayusculas, palabras claves.
     List<HorarioAtencion> findByAliasContainingIgnoreCase(String texto);
     
-    //PRIMERA LETRA DESPUES DEL FINDBY VA CON "MAYUSCULA"
+    //PRIMERA LETRA DESPUES DEL FINDBY VA CON "MAYUSCULA" ESPECIAL Y CONTAINIG SOLO PARA STRING
     List<HorarioAtencion> findByEspecialContainingIgnoreCase(String texto);
-
     
+    //BOOLEAN
+
+    List<HorarioAtencion> findByLibre(Boolean libre);
 }

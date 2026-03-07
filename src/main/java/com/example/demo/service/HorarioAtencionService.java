@@ -15,4 +15,7 @@ public interface HorarioAtencionService {
     List <HorarioAtencionResponseDto>buscaralias(String alias);
     //COLOCAMOS NOMBRES MAS HUMANOS Y SIEMPRE RESPONSEDTO.
     List<HorarioAtencionResponseDto> buscarporespecial(String especial);
+    
+    List<HorarioAtencionResponseDto> buscarporlibre(Boolean libre);
+    
 }

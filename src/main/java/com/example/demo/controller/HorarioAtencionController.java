@@ -114,7 +114,18 @@ public class HorarioAtencionController {
         return ResponseEntity.ok(resultados);
  }
 
+    @GetMapping("/buscar-libre")
 
+    public ResponseEntity<?>buscarporlibre (@RequestParam(required = false)Boolean libre) {
+        if (libre==null ){
+     	   return ResponseEntity.status(400)
+     			   //CAMBIAR EL NOMBRE DEL TEXTO
+     			   .body("{\"errors\": [\"Debe contener libre u ocupado\"]}");
+        }
+        List<HorarioAtencionResponseDto> resultados = horarioService.buscarporlibre(libre);
+        
+        return ResponseEntity.ok(resultados);
+ }
 
 }
 
@@ -123,3 +134,8 @@ public class HorarioAtencionController {
 //POSTMAN get string 
 //http://localhost:8080/horarioAtencion/buscar-especial?texto=
 //http://localhost:8080/horarioAtencion/buscar-especial?texto=Pediatria
+
+//POSTMAN BOOLEAN
+//?libre=true	200 OK	La lista de los que tienen 1 en la base.
+//?libre=false	200 OK	La lista de los que tienen 0 en la base.
+//Nada (vacio)	400 Bad Request	Tu mensaje de error: "El estado de busqueda es obligatorio".

@@ -24,6 +24,7 @@ public class HorarioAtencionServiceImpl implements HorarioAtencionService {
     private  HorarioAtencionMapper horarioMapper;
     
     @Override
+    //BUSCAR TODOS
     public List<HorarioAtencionResponseDto> buscarTodos() {
     	  List<HorarioAtencion> entidades = horarioRepository.findAll(); 
           
@@ -102,4 +103,19 @@ public class HorarioAtencionServiceImpl implements HorarioAtencionService {
     
     
 }
+    //BOOLEAN
+    //BUSCAR POR ...
+    @Override
+    public   List<HorarioAtencionResponseDto> buscarporlibre(Boolean libre) {
+    	List<HorarioAtencion> entidades = horarioRepository.findByLibre(libre) ;
+        return entidades.stream()
+                .map(entidad -> horarioMapper.toResponseDto(entidad)) 
+                .collect(Collectors.toList());
+    
+    
+}
+    
+    
+    
+    
 }

@@ -8,22 +8,23 @@ public class HorarioAtencionResponseDto {
     private String horaInicio;
     private String horaFin;
     private Integer version;
-    private Integer prioridad;// Lo agregamos por si el profe lo pide como en el original
+    private Integer prioridad;
     private String alias;
     private String especial;
+    private boolean libre;
+    
     
     public String getEspecial() {
 		return especial;
 	}
 
-	public void setEspecial(String especial) {
-		this.especial = especial;
-	}
+	
 
 	// Constructor vacío
     public HorarioAtencionResponseDto() {}
 
-    // Getters y Setters
+    // Getters y Setters // El GET (La salida)    // El SET (La entrada)
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -38,20 +39,22 @@ public class HorarioAtencionResponseDto {
 
     public String getHoraFin() { return horaFin; }
     public void setHoraFin(String horaFin) { this.horaFin = horaFin; }
-
+    
+    //INTEGER
     public Integer getVersion() { return version; }
     public void setVersion(Integer version) { this.version = version; }
     
- // El GET (La salida)
-    public Integer getPrioridad() { 
-        return prioridad; 
-    }
-
-    // El SET (La entrada)
-    public void setPrioridad(Integer prioridad) { 
-        this.prioridad = prioridad; 
-    }
+    //INTEGER
+    public Integer getPrioridad() { return prioridad; }
+    public void setPrioridad(Integer prioridad) { this.prioridad = prioridad;}
     
+    //STRING
     public String getAlias() {return alias;}
     public void setAlias (String alias) {this.alias = alias;}
+    
+    //BOOLEAN 
+    public void setEspecial(String especial) {this.especial = especial;}
+
+	public void setLibre(boolean libre) {this.libre = libre;}
+    
     }

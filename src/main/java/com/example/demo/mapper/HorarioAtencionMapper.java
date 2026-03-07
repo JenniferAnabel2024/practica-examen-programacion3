@@ -38,6 +38,8 @@ public class HorarioAtencionMapper {
         horarioEntity.setPrioridad(requestDTO.getPrioridad());
         horarioEntity.setAlias(requestDTO.getAlias());
         horarioEntity.setEspecial(requestDTO.getEspecial());
+        //BOOLEAN VA CON IS NO CON GET 
+        horarioEntity.setLibre(requestDTO.isLibre());
 
         return horarioEntity;
     }
@@ -56,6 +58,8 @@ public class HorarioAtencionMapper {
         responseDTO.setPrioridad(horarioEntity.getPrioridad());
         responseDTO.setAlias(horarioEntity.getAlias());
         responseDTO.setEspecial(horarioEntity.getEspecial());
+        //BOOLEAN VA CON IS NO CON GET 
+        responseDTO.setLibre(horarioEntity.isLibre());
         
         // Si la entidad tiene un médico, pasamos su ID al DTO de respuesta
         if (horarioEntity.getMedico() != null) {

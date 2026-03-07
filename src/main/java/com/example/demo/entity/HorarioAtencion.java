@@ -20,10 +20,12 @@ private int prioridad;
 private String especial;
 @NotNull
 private String alias;
+@NotNull 
+private boolean libre;
 
 
 public HorarioAtencion () {}
-public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraInicio, String HoraFin, int prioridad, String alias, String especial) {
+public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraInicio, String HoraFin, int prioridad, String alias, String especial, boolean libre) {
 	super(id); // Llama al ID de BaseEntity
     this.medico = medico;
     this.diaSemana = diaSemana;
@@ -32,6 +34,7 @@ public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraIni
     this.prioridad = prioridad;
     this.alias = alias;
     this.especial = especial;
+    this.libre = libre;
 }
 //Getters y setters
 //Para generarlos opción Source y Elegír  Generate Getters and Setters
@@ -79,6 +82,12 @@ public String getAlias() {
 }
 public void setAlias (String alias) {
 	this.alias =alias;
+}
+public boolean isLibre() {
+	return libre;
+}
+public void setLibre(boolean libre) {
+	this.libre = libre;
 }
 
 
