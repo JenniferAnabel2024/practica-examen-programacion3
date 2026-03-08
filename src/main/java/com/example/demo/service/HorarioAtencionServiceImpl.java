@@ -56,7 +56,8 @@ public class HorarioAtencionServiceImpl implements HorarioAtencionService {
     }
     
     public List <HorarioAtencionResponseDto> buscarPorPrioridad(int prioridad) {
-    	List<HorarioAtencion> entidades = horarioRepository.findByPrioridad(prioridad);        return entidades.stream()
+    	List<HorarioAtencion> entidades = horarioRepository.findByPrioridad(prioridad);        
+    	        return entidades.stream()
                 .map(horarioMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
@@ -114,8 +115,13 @@ public class HorarioAtencionServiceImpl implements HorarioAtencionService {
     
     
 }
-    
-    
-    
+    @Override
+    //EN EL FIND BY PRIMERO MAYUSCULA LUEGO MINUSCULA
+    public  List<HorarioAtencionResponseDto> buscarnumeroconsultorio(Integer numeroConsultorio) {
+    	List<HorarioAtencion> entidades = horarioRepository.findByNumeroconsultorio( numeroConsultorio);        
+    	        return entidades.stream()
+    	        .map(entidad -> horarioMapper.toResponseDto(entidad))
+                .collect(Collectors.toList());
+    }
     
 }

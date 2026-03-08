@@ -12,11 +12,13 @@ public class HorarioAtencionResponseDto {
     private String alias;
     private String especial;
     private boolean libre;
+    private Integer numeroconsultorio;
     
     
-    public String getEspecial() {
-		return especial;
-	}
+   
+	
+	public String getEspecial() {
+		return especial;}
 
 	
 
@@ -57,4 +59,9 @@ public class HorarioAtencionResponseDto {
 
 	public void setLibre(boolean libre) {this.libre = libre;}
     
-    }
+	 public Integer getNumeroconsultorio() {
+			return numeroconsultorio;}
+
+		public void setNumeroconsultorio( Integer numeroconsultorio) {this.numeroconsultorio = numeroconsultorio;}
+    
+}

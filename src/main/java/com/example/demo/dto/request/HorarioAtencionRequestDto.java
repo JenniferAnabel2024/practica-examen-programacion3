@@ -50,9 +50,8 @@ public class HorarioAtencionRequestDto {
     // Constructores
     public HorarioAtencionRequestDto() {}
 
-    
-
-	
+    @NotNull (message = "Elnumero de onsultorio no debe ir vacìo")
+    private Integer numeroconsultorio;
 
 
 
@@ -85,4 +84,11 @@ public class HorarioAtencionRequestDto {
 	public void setLibre(boolean libre) {
 		this.libre = libre;
 	}
+	public Integer getNumeroconsultorio() {
+		return numeroconsultorio;
+	}
+	public void setNumeroconsultorio(Integer numeroconsultorio) {
+		this.numeroconsultorio = numeroconsultorio;
+	}
+	
     }

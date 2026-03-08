@@ -22,10 +22,12 @@ private String especial;
 private String alias;
 @NotNull 
 private boolean libre;
+@NotNull
+private Integer numeroconsultorio;
 
 
 public HorarioAtencion () {}
-public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraInicio, String HoraFin, int prioridad, String alias, String especial, boolean libre) {
+public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraInicio, String HoraFin, int prioridad, String alias, String especial, boolean libre, Integer numeroconsultorio) {
 	super(id); // Llama al ID de BaseEntity
     this.medico = medico;
     this.diaSemana = diaSemana;
@@ -35,10 +37,12 @@ public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraIni
     this.alias = alias;
     this.especial = especial;
     this.libre = libre;
+    this.numeroconsultorio = numeroconsultorio;
 }
 //Getters y setters
 //Para generarlos opción Source y Elegír  Generate Getters and Setters
 // EL GET LE PIDE EL DATO A LA VARIABLE PRIVADA Y ES LA PUERTA DE SALIDA AL MAPPER
+
 
 public String getEspecial() {
 	return especial;
@@ -89,6 +93,11 @@ public boolean isLibre() {
 public void setLibre(boolean libre) {
 	this.libre = libre;
 }
-
+public Integer getNumeroconsultorio() {
+	return numeroconsultorio;
+}
+public void setNumeroconsultorio(Integer numeroconsultorio) {
+	this.numeroconsultorio = numeroconsultorio;
+}
 
 }

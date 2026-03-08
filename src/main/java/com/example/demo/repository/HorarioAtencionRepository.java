@@ -1,5 +1,5 @@
 package com.example.demo.repository;
-
+//MISMO NOMBRE QUE EN LA ENTIDAD RESPETANDO MAYUSCULAS Y MINUSCULAS 
 import com.example.demo.entity.HorarioAtencion; // Importamos la entidad
 
 import org.springframework.data.jpa.repository.JpaRepository; // La herramienta de Spring
@@ -31,4 +31,6 @@ public interface HorarioAtencionRepository extends JpaRepository<HorarioAtencion
     //BOOLEAN
 
     List<HorarioAtencion> findByLibre(Boolean libre);
+    
+    List<HorarioAtencion> findByNumeroconsultorio(Integer numeroconsultorio);
 }

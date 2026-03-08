@@ -18,4 +18,6 @@ public interface HorarioAtencionService {
     
     List<HorarioAtencionResponseDto> buscarporlibre(Boolean libre);
     
+    List<HorarioAtencionResponseDto> buscarnumeroconsultorio(Integer numeroConsultorio);
+    
 }

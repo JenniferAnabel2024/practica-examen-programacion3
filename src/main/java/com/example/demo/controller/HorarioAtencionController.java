@@ -127,6 +127,17 @@ public class HorarioAtencionController {
         return ResponseEntity.ok(resultados);
  }
 
+    @GetMapping("/buscar-numeroconsultorio")
+    public ResponseEntity<?>buscarnumeroconsultorio (@RequestParam(required = false)Integer numeroconsultorio) {
+        if (numeroconsultorio==null ){
+     	   return ResponseEntity.status(400)
+     			   //CAMBIAR EL NOMBRE DEL TEXTO
+     			   .body("{\"errors\": [\"Debe contener un numero de consultorio\"]}");
+        }
+        List<HorarioAtencionResponseDto> resultados = horarioService.buscarnumeroconsultorio(numeroconsultorio);
+        
+        return ResponseEntity.ok(resultados);
+ }
 }
 
 
