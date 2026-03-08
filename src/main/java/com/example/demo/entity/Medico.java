@@ -30,4 +30,9 @@ public class Medico extends BaseEntityPractica {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+	//  git checkout develop, git fetch , git swich develop , git reset --hard HEAD , git pull
+    // ---------------------------------------------------------------------------------------
+	// git status, git add uno por uno , git commit -m "" , git oush origin final....
+
+
 }
