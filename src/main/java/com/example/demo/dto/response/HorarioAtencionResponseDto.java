@@ -13,6 +13,7 @@ public class HorarioAtencionResponseDto {
     private String especial;
     private boolean libre;
     private Integer numeroconsultorio;
+    private int nroconsultorio;
     
     
    
@@ -63,5 +64,15 @@ public class HorarioAtencionResponseDto {
 			return numeroconsultorio;}
 
 		public void setNumeroconsultorio( Integer numeroconsultorio) {this.numeroconsultorio = numeroconsultorio;}
+
+
+
+		public int getNroconsultorio() {return nroconsultorio;}
+
+
+
+		public void setNroconsultorio(int nroconsultorio) {this.nroconsultorio = nroconsultorio;}
+		
+		
     
 }

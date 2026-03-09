@@ -45,6 +45,8 @@ public class HorarioAtencionRequestDto {
     @NotNull (message = "El campo no debe quedar libre ")
     private boolean libre;
     
+    @NotNull (message = "el numero de consultorio no puede ser nulo")
+    private int nroconsultorio;
     
     
     // Constructores
@@ -90,5 +92,13 @@ public class HorarioAtencionRequestDto {
 	public void setNumeroconsultorio(Integer numeroconsultorio) {
 		this.numeroconsultorio = numeroconsultorio;
 	}
+	public int getNroconsultorio() {
+		return nroconsultorio;
+	}
+	public void setNroconsultorio(int nroconsultorio) {
+		this.nroconsultorio = nroconsultorio;
+	}
+	
+	
 	
     }

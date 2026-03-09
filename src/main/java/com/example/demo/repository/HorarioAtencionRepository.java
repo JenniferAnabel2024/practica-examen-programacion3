@@ -33,4 +33,7 @@ public interface HorarioAtencionRepository extends JpaRepository<HorarioAtencion
     List<HorarioAtencion> findByLibre(Boolean libre);
     
     List<HorarioAtencion> findByNumeroconsultorio(Integer numeroconsultorio);
+    
+    List<HorarioAtencion> findBynroconsultorio(int numeroconsultorio);
+    
 }

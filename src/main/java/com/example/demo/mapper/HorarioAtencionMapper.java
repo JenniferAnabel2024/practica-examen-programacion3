@@ -41,6 +41,8 @@ public class HorarioAtencionMapper {
         //BOOLEAN VA CON IS NO CON GET 
         horarioEntity.setLibre(requestDTO.isLibre());
         horarioEntity.setNumeroconsultorio(requestDTO.getNumeroconsultorio());
+        horarioEntity.setNroconsultorio(requestDTO.getNroconsultorio());
+
 
         return horarioEntity;
     }
@@ -62,6 +64,8 @@ public class HorarioAtencionMapper {
         //BOOLEAN VA CON IS NO CON GET 
         responseDTO.setLibre(horarioEntity.isLibre());
         responseDTO.setNumeroconsultorio(horarioEntity.getNumeroconsultorio());
+        responseDTO.setNroconsultorio(horarioEntity.getNroconsultorio());
+
         
         // Si la entidad tiene un médico, pasamos su ID al DTO de respuesta
         if (horarioEntity.getMedico() != null) {

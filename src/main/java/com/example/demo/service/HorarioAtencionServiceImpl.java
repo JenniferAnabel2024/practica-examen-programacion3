@@ -124,4 +124,14 @@ public class HorarioAtencionServiceImpl implements HorarioAtencionService {
                 .collect(Collectors.toList());
     }
     
+    
+    @Override
+    //EN EL FIND BY PRIMERO MAYUSCULA LUEGO MINUSCULA
+    public  List<HorarioAtencionResponseDto> buscarnroconsultorio(int nroconsultorio) {
+    	List<HorarioAtencion> entidades = horarioRepository.findBynroconsultorio( nroconsultorio);        
+    	        return entidades.stream()
+    	        .map(entidad -> horarioMapper.toResponseDto(entidad))
+                .collect(Collectors.toList());
+    }
+   
 }

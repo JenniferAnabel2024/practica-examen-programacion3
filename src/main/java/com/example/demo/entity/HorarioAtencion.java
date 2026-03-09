@@ -24,6 +24,8 @@ private String alias;
 private boolean libre;
 @NotNull
 private Integer numeroconsultorio;
+@NotNull
+private int nroconsultorio;
 
 
 public HorarioAtencion () {}
@@ -38,6 +40,7 @@ public HorarioAtencion ( Long id, Medico medico,String diaSemana, String HoraIni
     this.especial = especial;
     this.libre = libre;
     this.numeroconsultorio = numeroconsultorio;
+    this.nroconsultorio = nroconsultorio;
 }
 //Getters y setters
 //Para generarlos opción Source y Elegír  Generate Getters and Setters
@@ -99,5 +102,14 @@ public Integer getNumeroconsultorio() {
 public void setNumeroconsultorio(Integer numeroconsultorio) {
 	this.numeroconsultorio = numeroconsultorio;
 }
-
+public int getNroconsultorio() {
+	return nroconsultorio;
+}
+public void setNroconsultorio(int nroconsultorio) {
+	this.nroconsultorio = nroconsultorio;
+}
+// GIT FLOW
+//git checkout develop, git fetch, git switch develop, git reset --hard HEAD, git pull, git push origin examenfinal2026
+// Trabajar------------------------------------
+// git status, git add, git commit -m "mensaje"
 }

@@ -20,4 +20,7 @@ public interface HorarioAtencionService {
     
     List<HorarioAtencionResponseDto> buscarnumeroconsultorio(Integer numeroConsultorio);
     
+    
+    List<HorarioAtencionResponseDto> buscarnroconsultorio(int nroconsultorio);
+
 }

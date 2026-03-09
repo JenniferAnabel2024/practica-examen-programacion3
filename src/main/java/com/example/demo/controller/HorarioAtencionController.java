@@ -138,6 +138,24 @@ public class HorarioAtencionController {
         
         return ResponseEntity.ok(resultados);
  }
+    //Para que las cruces rojas desaparezcan, el nombre en el Controller y en el Service tienen que ser IDÉNTICOS.
+    
+    
+    
+    // INT PRIMITIVO
+    @GetMapping("/buscar-nroconsultorio")
+    public ResponseEntity<?>buscarnroconsultorio (@RequestParam(required = false, defaultValue = "0") int nroconsultorio) {
+        if (nroconsultorio <=0 ){
+     	   return ResponseEntity.status(400)
+     			   //CAMBIAR EL NOMBRE DEL TEXTO EN CADA MENSAJE
+     			   .body("{\"errors\": [\"Debe contener un numero de consultorio\"]}");
+        }
+        
+        List<HorarioAtencionResponseDto> resultados = horarioService.buscarnroconsultorio(nroconsultorio);
+        
+        return ResponseEntity.ok(resultados);
+ }
+    
 }
 
 
@@ -150,3 +168,7 @@ public class HorarioAtencionController {
 //?libre=true	200 OK	La lista de los que tienen 1 en la base.
 //?libre=false	200 OK	La lista de los que tienen 0 en la base.
 //Nada (vacio)	400 Bad Request	Tu mensaje de error: "El estado de busqueda es obligatorio".
+
+
+//POSTMAN INT 
+//localhost:8080/horarioAtencion/buscar-nroconsultorio?nroconsultorio=105
