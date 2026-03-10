@@ -1,42 +1,25 @@
 package com.example.demo.service;
-//ORDENES CONCRETAS-IMPLMENTACIOn / HABLA CON LA BASE DE DATOS, USA AL REPOSITORIO
-//USA AL MAPPY
-import com.example.demo.dto.response.HorarioAtencionResponseDto;
+
 import com.example.demo.entity.HorarioAtencion;
 import com.example.demo.repository.HorarioAtencionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.stream.Collectors;
-import com.example.demo.mapper.HorarioAtencionMapper;
-import com.example.demo.entity.HorarioAtencion;
-
 
 @Service
 public class HorarioAtencionServiceImpl implements HorarioAtencionService {
 
-	
-	
     @Autowired
     private HorarioAtencionRepository horarioRepository;
-    @Autowired
-    private  HorarioAtencionMapper horarioMapper;
-    
+
     @Override
-    //BUSCAR TODOS
-    public List<HorarioAtencionResponseDto> buscarTodos() {
-    	  List<HorarioAtencion> entidades = horarioRepository.findAll(); 
-          
-          return entidades.stream()
-                  .map(entidad -> horarioMapper.toResponseDto(entidad)) 
-                  .collect(Collectors.toList());
+    public List<HorarioAtencion> buscarTodos() {
+        return horarioRepository.findAll();
     }
 
     @Override
-    public HorarioAtencionResponseDto guardar(HorarioAtencion horario) {
-    	HorarioAtencion entidadGuardada = horarioRepository.save(horario);      
-    	return horarioMapper.toResponseDto(entidadGuardada);
+    public HorarioAtencion guardar(HorarioAtencion horario) {
+        return horarioRepository.save(horario);
     }
 
     @Override
@@ -45,93 +28,49 @@ public class HorarioAtencionServiceImpl implements HorarioAtencionService {
     }
 
     @Override
-    public HorarioAtencionResponseDto buscarPorId(Long id) {
-    	HorarioAtencion entidad = horarioRepository.findById(id).orElse(null);
-        if (entidad == null) {
-            return null;
-        }
-     // 3. Si todo está bien, la convertimos a DTO y la devolvemos
-        return horarioMapper.toResponseDto(entidad);
-        
+    public HorarioAtencion buscarPorId(Long id) {
+        return horarioRepository.findById(id).orElse(null);
     }
-    
-    public List <HorarioAtencionResponseDto> buscarPorPrioridad(int prioridad) {
-    	List<HorarioAtencion> entidades = horarioRepository.findByPrioridad(prioridad);        
-    	        return entidades.stream()
-                .map(horarioMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-    @Override 
-    //altaprioridad
-    public List<HorarioAtencionResponseDto> buscarAltaPrioridad() {
-        List<HorarioAtencion> entidades = horarioRepository.findByPrioridadGreaterThanEqual(4); 
-        
-        return entidades.stream()
-                .map(entidad -> horarioMapper.toResponseDto(entidad)) 
-                .collect(Collectors.toList());
+
+    // --- MÉTODOS DE BÚSQUEDA (Solo Entidades) ---
+
+    @Override
+    public List<HorarioAtencion> buscarPorPrioridad(int prioridad) {
+        return horarioRepository.findByPrioridad(prioridad);
     }
 
     @Override
-    //baja prioridad
-    public List<HorarioAtencionResponseDto> buscarBajaPrioridad() {
-       
-        List<HorarioAtencion> entidades = horarioRepository.findByPrioridadLessThanEqual(2); 
-        
-        return entidades.stream()
-                .map(entidad -> horarioMapper.toResponseDto(entidad)) 
-                .collect(Collectors.toList());
+    public List<HorarioAtencion> buscarAltaPrioridad() {
+        return horarioRepository.findByPrioridadGreaterThanEqual(4);
     }
-    
-    
-    //STRING
+
     @Override
-    public List<HorarioAtencionResponseDto> buscaralias(String alias) {
-        
-    	List<HorarioAtencion> entidades = horarioRepository.findByAliasContainingIgnoreCase(  alias);        
-        return entidades.stream()
-                .map(entidad -> horarioMapper.toResponseDto(entidad)) 
-                .collect(Collectors.toList());
+    public List<HorarioAtencion> buscarBajaPrioridad() {
+        return horarioRepository.findByPrioridadLessThanEqual(2);
     }
-    
-    //STRING
-    @Override 
- //NOMBRE IGUAL IGUAL QUE EN SERVIVE.JAVA AGREGABDOLE EL PUBLIC DELANTE.
-   public  List<HorarioAtencionResponseDto> buscarporespecial(String especial) {
-    	List<HorarioAtencion> entidades = horarioRepository.findByEspecialContainingIgnoreCase(especial);
-        return entidades.stream()
-                .map(entidad -> horarioMapper.toResponseDto(entidad)) 
-                .collect(Collectors.toList());
-    
-    
-}
-    //BOOLEAN
-    //BUSCAR POR ...
+
     @Override
-    public   List<HorarioAtencionResponseDto> buscarporlibre(Boolean libre) {
-    	List<HorarioAtencion> entidades = horarioRepository.findByLibre(libre) ;
-        return entidades.stream()
-                .map(entidad -> horarioMapper.toResponseDto(entidad)) 
-                .collect(Collectors.toList());
-    
-    
-}
-    @Override
-    //EN EL FIND BY PRIMERO MAYUSCULA LUEGO MINUSCULA
-    public  List<HorarioAtencionResponseDto> buscarnumeroconsultorio(Integer numeroConsultorio) {
-    	List<HorarioAtencion> entidades = horarioRepository.findByNumeroconsultorio( numeroConsultorio);        
-    	        return entidades.stream()
-    	        .map(entidad -> horarioMapper.toResponseDto(entidad))
-                .collect(Collectors.toList());
+    public List<HorarioAtencion> buscaralias(String alias) {
+        return horarioRepository.findByAliasContainingIgnoreCase(alias);
     }
-    
-    
+
     @Override
-    //EN EL FIND BY PRIMERO MAYUSCULA LUEGO MINUSCULA
-    public  List<HorarioAtencionResponseDto> buscarnroconsultorio(int nroconsultorio) {
-    	List<HorarioAtencion> entidades = horarioRepository.findBynroconsultorio( nroconsultorio);        
-    	        return entidades.stream()
-    	        .map(entidad -> horarioMapper.toResponseDto(entidad))
-                .collect(Collectors.toList());
+    public List<HorarioAtencion> buscarporespecial(String especial) {
+        return horarioRepository.findByEspecialContainingIgnoreCase(especial);
     }
-   
+
+    @Override
+    public List<HorarioAtencion> buscarporlibre(Boolean libre) {
+        return horarioRepository.findByLibre(libre);
+    }
+
+    @Override
+    public List<HorarioAtencion> buscarnumeroconsultorio(Integer numeroConsultorio) {
+        return horarioRepository.findByNumeroconsultorio(numeroConsultorio);
+    }
+
+    @Override
+    public List<HorarioAtencion> buscarnroconsultorio(int nroconsultorio) {
+        return horarioRepository.findBynroconsultorio(nroconsultorio);
+    }
 }

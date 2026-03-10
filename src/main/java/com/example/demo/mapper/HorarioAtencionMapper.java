@@ -1,5 +1,5 @@
 package com.example.demo.mapper;
-// A MANO
+
 import org.springframework.stereotype.Component;
 import com.example.demo.dto.request.HorarioAtencionRequestDto;
 import com.example.demo.dto.response.HorarioAtencionResponseDto;
@@ -9,51 +9,51 @@ import com.example.demo.service.MedicoService;
 
 @Component
 public class HorarioAtencionMapper {
-	//Declaracion
 
     private final MedicoService medicoService;
-    //Constructor
-    
+
     public HorarioAtencionMapper(MedicoService medicoService) {
         this.medicoService = medicoService;
     }
-   //ENTRADA
-    //Entrada: Recibe un requestDTO (lo que el usuario envió por internet).(El que CREA o RECIBE)  
+
+    // 📩 FROM DTO: De la web a la Base de Datos (Para Guardar/Crear)
     public HorarioAtencion fromDto(HorarioAtencionRequestDto requestDTO) throws Exception {
         if (requestDTO == null) return null;
-        //creando una carpeta nueva y vacía.
+
         HorarioAtencion horarioEntity = new HorarioAtencion();
 
+        // Buscamos el objeto médico real usando el ID que vino en el Request
         if (requestDTO.getMedicoId() != null) {
             Medico medico = medicoService.buscarPorId(requestDTO.getMedicoId());
             if (medico != null) {
                 horarioEntity.setMedico(medico);
             }
         }
-    //requestDTO.get...(): Estás leyendo lo que el usuario escribió en el formulario (Request)
-    //horarioEntity.set...(...): Estás escribiendo ese valor en la carpeta oficial que se va a guardar en la base de datos.    
+
+        // Mapeo de campos simples
         horarioEntity.setDiaSemana(requestDTO.getDiaSemana());
         horarioEntity.setHoraInicio(requestDTO.getHoraInicio());
         horarioEntity.setHoraFin(requestDTO.getHoraFin());
         horarioEntity.setPrioridad(requestDTO.getPrioridad());
         horarioEntity.setAlias(requestDTO.getAlias());
         horarioEntity.setEspecial(requestDTO.getEspecial());
-        //BOOLEAN VA CON IS NO CON GET 
+        
+        // BOOLEAN: Recordá que en el DTO se usa isLibre()
         horarioEntity.setLibre(requestDTO.isLibre());
+        
+        // NÚMEROS: Integer e int
         horarioEntity.setNumeroconsultorio(requestDTO.getNumeroconsultorio());
         horarioEntity.setNroconsultorio(requestDTO.getNroconsultorio());
 
-
         return horarioEntity;
     }
-    //SALIDA
-  //Salida: Devuelve un HorarioAtencion (la entidad lista para ir al Repo).(El que MUESTRA AL USUARIO)
+
+    // 📤 TO DTO: De la Base de Datos a la web (Para Mostrar)
     public HorarioAtencionResponseDto toResponseDto(HorarioAtencion horarioEntity) {
         if (horarioEntity == null) return null;
-        //CREANDO DTO DE RESPUESTA VACIA
+
         HorarioAtencionResponseDto responseDTO = new HorarioAtencionResponseDto();
-        //La parte de la izquierda (el set) está escribiendo ese dato en el nuevo objeto de respuesta
-        //La parte de la derecha (el get) está leyendo el dato que ya existe en la base de datos
+
         responseDTO.setId(horarioEntity.getId());
         responseDTO.setDiaSemana(horarioEntity.getDiaSemana());
         responseDTO.setHoraInicio(horarioEntity.getHoraInicio());
@@ -61,13 +61,14 @@ public class HorarioAtencionMapper {
         responseDTO.setPrioridad(horarioEntity.getPrioridad());
         responseDTO.setAlias(horarioEntity.getAlias());
         responseDTO.setEspecial(horarioEntity.getEspecial());
-        //BOOLEAN VA CON IS NO CON GET 
+        
+        // BOOLEAN: Mantenemos la consistencia
         responseDTO.setLibre(horarioEntity.isLibre());
+        
         responseDTO.setNumeroconsultorio(horarioEntity.getNumeroconsultorio());
         responseDTO.setNroconsultorio(horarioEntity.getNroconsultorio());
 
-        
-        // Si la entidad tiene un médico, pasamos su ID al DTO de respuesta
+        // Para la respuesta, devolvemos solo el ID del médico para no sobrecargar de datos
         if (horarioEntity.getMedico() != null) {
             responseDTO.setMedicoId(horarioEntity.getMedico().getId());
         }

@@ -1,9 +1,6 @@
 package com.example.demo.controller;
-//HABLA CON EL SERVICE
-//CRITERIOS DE ACEPTACION VAN AQUI 
-import java.util.List;
-import java.util.stream.Collectors;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,161 +11,100 @@ import com.example.demo.dto.response.HorarioAtencionResponseDto;
 import com.example.demo.entity.HorarioAtencion;
 import com.example.demo.mapper.HorarioAtencionMapper;
 import com.example.demo.service.HorarioAtencionService;
-
 import jakarta.validation.Valid;
-// avisa a Spring que esta clase es un Controlador
+
 @RestController
-//Spring ya sabe que todo lo que esté adentro de ese archivo empieza con /horarioAtencion
 @RequestMapping("/horarioAtencion")
 public class HorarioAtencionController {
 
-	//Autowired es lla Inyección de Dependencias.(necesito usar las funciones de HorarioAtencionService.Inyectamelas, para que pueda usarla)
     @Autowired
-    private HorarioAtencionService horarioService; // Tu interfaz, VARIABLE DEL SERVICE.
+    private HorarioAtencionService horarioService; 
 
     @Autowired
     private HorarioAtencionMapper mapper;
 
-    //Se usa para operaciones de lectura que no modifican la base de datos".
-    // 1. Obtener todos
+    // 1. LISTAR TODOS
     @GetMapping
     public ResponseEntity<List<HorarioAtencionResponseDto>> listarTodos() {
-    	return ResponseEntity.ok(horarioService.buscarTodos());
-    	
+        List<HorarioAtencion> entidades = horarioService.buscarTodos();
+        return ResponseEntity.ok(entidades.stream().map(mapper::toResponseDto).toList());
     }
 
-    // 2. Obtener por ID
+    // 2. BUSCAR POR ID
     @GetMapping("/{id}")
     public ResponseEntity<HorarioAtencionResponseDto> obtenerPorId(@PathVariable Long id) {
-        HorarioAtencionResponseDto dto  = horarioService.buscarPorId(id);
-        if (dto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(dto);
+        HorarioAtencion entidad = horarioService.buscarPorId(id);
+        if (entidad == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(mapper.toResponseDto(entidad));
     }
      
-    //Es cuando el usuario viene con un formulario nuevo para dar de alta algo
-    // 3. Crear (POST)
+    // 3. CREAR (POST)
     @PostMapping
     public ResponseEntity<HorarioAtencionResponseDto> guardar(@Valid @RequestBody HorarioAtencionRequestDto dto) throws Exception {
         HorarioAtencion entity = mapper.fromDto(dto);
-        HorarioAtencionResponseDto nuevo = horarioService.guardar(entity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+        HorarioAtencion guardado = horarioService.guardar(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDto(guardado));
     }
 
-    // 4. Eliminar
+    // 4. ELIMINAR
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminar(@PathVariable Long id) {
         try {
             horarioService.eliminar(id);
-            return ResponseEntity.ok("Eliminado correctamente");
+            return ResponseEntity.ok("Eliminado correctamente ID: " + id);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el ID");
         }
     }
-    @GetMapping("/prioridad/{prioridad}")
-    public ResponseEntity<List<HorarioAtencionResponseDto>> buscarPorPrioridad(@PathVariable int prioridad) {
-        List<HorarioAtencionResponseDto> lista = horarioService.buscarPorPrioridad(prioridad);
-        
-        return ResponseEntity.ok(lista);
-    }
- // 6. Obtener registros de Alta Prioridad (>= 4)
-    @GetMapping("/alta-prioridad")
-    public ResponseEntity<List<HorarioAtencionResponseDto>> listarAltaPrioridad() {
-        // Llamamos al service que ya sabe que "Alta" es >= 4
-        List<HorarioAtencionResponseDto> lista = horarioService.buscarAltaPrioridad();
-        return ResponseEntity.ok(lista);
-    }
 
-    // 7. Obtener registros de Baja Prioridad (<= 2)
-    @GetMapping("/baja-prioridad")
-    public ResponseEntity<List<HorarioAtencionResponseDto>> listarBajaPrioridad() {
-        // Llamamos al service que ya sabe que "Baja" es <= 2
-        List<HorarioAtencionResponseDto> lista = horarioService.buscarBajaPrioridad();
-        return ResponseEntity.ok(lista);
-    }
-    //@PutMapping (Editar): (Que también existe) Sería como borrar una palabra y escribir otra. También modifica.
-    
+    // 5. BUSCAR POR ALIAS (STRING)
     @GetMapping("/buscar-alias")
-    public ResponseEntity<?>buscarporalias (@RequestParam(required = false)String texto) {
-       if (texto==null || texto.trim().isEmpty()){
-    	   return ResponseEntity.status(400)
-    			   .body("{\"errors\": [\"texto de busqueda obligatorio\"]}");
-       }
-       List<HorarioAtencionResponseDto> resultados = horarioService.buscaralias(texto);
-       
-       return ResponseEntity.ok(resultados);
-}
-    
-    //IGUAL QUE EL SERVICE.IMPL
-    //400 ERROR + LISTA VACIA
-    @GetMapping("/buscar-especial")
-
-    public ResponseEntity<?>buscarporespecial (@RequestParam(required = false)String texto) {
-        if (texto==null || texto.trim().isEmpty()){
-     	   return ResponseEntity.status(400)
-     			   .body("{\"errors\": [\"texto de busqueda obligatorio\"]}");
+    public ResponseEntity<?> buscarporalias(@RequestParam(required = false) String texto) {
+        if (texto == null || texto.trim().isEmpty()) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"El alias es obligatorio\"]}");
         }
-        List<HorarioAtencionResponseDto> resultados = horarioService.buscarporespecial(texto);
-        
-        return ResponseEntity.ok(resultados);
- }
+        List<HorarioAtencion> resultados = horarioService.buscaralias(texto);
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
 
+    // 6. BUSCAR POR LIBRE (BOOLEAN PRIMITIVO)
     @GetMapping("/buscar-libre")
-
-    public ResponseEntity<?>buscarporlibre (@RequestParam(required = false)Boolean libre) {
-        if (libre==null ){
-     	   return ResponseEntity.status(400)
-     			   //CAMBIAR EL NOMBRE DEL TEXTO
-     			   .body("{\"errors\": [\"Debe contener libre u ocupado\"]}");
+    public ResponseEntity<?> buscarporlibre(@RequestParam(required = false) Boolean libre) {
+        if (libre == null) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"Debe indicar si está libre o no\"]}");
         }
-        List<HorarioAtencionResponseDto> resultados = horarioService.buscarporlibre(libre);
-        
-        return ResponseEntity.ok(resultados);
- }
+        List<HorarioAtencion> resultados = horarioService.buscarporlibre(libre);
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
 
+    // 7. BUSCAR POR CONSULTORIO (INTEGER OBJETO)
     @GetMapping("/buscar-numeroconsultorio")
-    public ResponseEntity<?>buscarnumeroconsultorio (@RequestParam(required = false)Integer numeroconsultorio) {
-        if (numeroconsultorio==null ){
-     	   return ResponseEntity.status(400)
-     			   //CAMBIAR EL NOMBRE DEL TEXTO
-     			   .body("{\"errors\": [\"Debe contener un numero de consultorio\"]}");
+    public ResponseEntity<?> buscarnumeroconsultorio(@RequestParam(required = false) Integer numeroconsultorio) {
+        if (numeroconsultorio == null) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"Número de consultorio obligatorio\"]}");
         }
-        List<HorarioAtencionResponseDto> resultados = horarioService.buscarnumeroconsultorio(numeroconsultorio);
-        
-        return ResponseEntity.ok(resultados);
- }
-    //Para que las cruces rojas desaparezcan, el nombre en el Controller y en el Service tienen que ser IDÉNTICOS.
-    
-    
-    
-    // INT PRIMITIVO
+        List<HorarioAtencion> resultados = horarioService.buscarnumeroconsultorio(numeroconsultorio);
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
+
+    // 8. BUSCAR POR NRO (INT PRIMITIVO)
     @GetMapping("/buscar-nroconsultorio")
-    public ResponseEntity<?>buscarnroconsultorio (@RequestParam(required = false, defaultValue = "0") int nroconsultorio) {
-        if (nroconsultorio <=0 ){
-     	   return ResponseEntity.status(400)
-     			   //CAMBIAR EL NOMBRE DEL TEXTO EN CADA MENSAJE
-     			   .body("{\"errors\": [\"Debe contener un numero de consultorio\"]}");
+    public ResponseEntity<?> buscarnroconsultorio(@RequestParam(required = false, defaultValue = "0") int nro) {
+        if (nro <= 0) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"Debe ser un número mayor a 0\"]}");
         }
-        
-        List<HorarioAtencionResponseDto> resultados = horarioService.buscarnroconsultorio(nroconsultorio);
-        
-        return ResponseEntity.ok(resultados);
- }
-    
+        List<HorarioAtencion> resultados = horarioService.buscarnroconsultorio(nro);
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
 }
 
-
-
-//POSTMAN get string 
-//http://localhost:8080/horarioAtencion/buscar-especial?texto=
-//http://localhost:8080/horarioAtencion/buscar-especial?texto=Pediatria
-
-//POSTMAN BOOLEAN
-//?libre=true	200 OK	La lista de los que tienen 1 en la base.
-//?libre=false	200 OK	La lista de los que tienen 0 en la base.
-//Nada (vacio)	400 Bad Request	Tu mensaje de error: "El estado de busqueda es obligatorio".
-
-
-//POSTMAN INT 
-//localhost:8080/horarioAtencion/buscar-nroconsultorio?nroconsultorio=105
+/* =============================================================================
+  🚀 GUÍA DE COMANDOS POSTMAN
+  =============================================================================
+  GET String:  localhost:8080/horarioAtencion/buscar-alias?texto=Guardia
+  GET Boolean: localhost:8080/horarioAtencion/buscar-libre?libre=true
+  GET Integer: localhost:8080/horarioAtencion/buscar-numeroconsultorio?numeroconsultorio=101
+  GET Int:     localhost:8080/horarioAtencion/buscar-nroconsultorio?nro=5
+  =============================================================================
+  
+*/
