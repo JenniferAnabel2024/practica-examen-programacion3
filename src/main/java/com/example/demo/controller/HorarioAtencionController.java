@@ -108,3 +108,60 @@ public class HorarioAtencionController {
   =============================================================================
   
 */
+
+/*--------------------------------------------------------------------------------------
+ @GetMapping("/buscar-numeroconsultorio")
+    public ResponseEntity<?> buscarnumeroconsultorio(@RequestParam(required = false) Integer numeroconsultorio) {
+        if (numeroconsultorio == null) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"Número de consultorio obligatorio\"]}");
+        }
+        List<HorarioAtencion> resultados = horarioService.buscarnumeroconsultorio(numeroconsultorio);
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
+
+    // 8. BUSCAR POR NRO (INT PRIMITIVO)
+    @GetMapping("/buscar-nroconsultorio")
+    public ResponseEntity<?> buscarnroconsultorio(@RequestParam(required = false, defaultValue = "0") int nro) {
+        if (nro <= 0) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"Debe ser un número mayor a 0\"]}");
+        }
+        List<HorarioAtencion> resultados = horarioService.buscarnroconsultorio(nro);
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
+    @GetMapping("/buscar-por-bajaprioridad")
+    public ResponseEntity<?> buscarPorBajaPrioridad(@RequestParam(required = false, defaultValue = "0") int prioridad) {
+        // Validación de rango (Criterio de aceptación)
+        if (prioridad < 1 || prioridad > 5) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"prioridad debe estar entre 1 y 5\"]}");
+        }
+        
+        // Llamamos al servicio (ajustado a horarioService)
+        List<HorarioAtencion> resultados = horarioService.buscarBajaPrioridad(prioridad);
+        
+        // Si no hay resultados, devolvemos lista vacía [] (Evita el error 500)
+        if (resultados == null || resultados.isEmpty()) {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
+        
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
+
+    // 10. MÉTODO PARA ALTA PRIORIDAD
+    @GetMapping("/buscar-por-altaprioridad")
+    public ResponseEntity<?> buscarPorAltaPrioridad(@RequestParam(required = false, defaultValue = "0") int prioridad) {
+        // Validación de rango
+        if (prioridad < 1 || prioridad > 5) {
+            return ResponseEntity.status(400).body("{\"errors\": [\"prioridad debe estar entre 1 y 5\"]}");
+        }
+        
+        // Llamamos al servicio (ajustado a horarioService)
+        List<HorarioAtencion> resultados = horarioService.buscarAltaPrioridad(prioridad);
+        
+        if (resultados == null || resultados.isEmpty()) {
+            return ResponseEntity.ok(new ArrayList<>());
+        }
+        
+        return ResponseEntity.ok(resultados.stream().map(mapper::toResponseDto).toList());
+    }
+}
+ */
